@@ -56,7 +56,6 @@ function App() {
     <Container>
       <Row>
         <Col>
-          <Alert variant="danger">Don't use yet. Under construction.</Alert>
           <h1>FuelFinder.uk</h1>
         </Col>
       </Row>
