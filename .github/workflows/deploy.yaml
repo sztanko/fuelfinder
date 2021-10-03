@@ -29,9 +29,7 @@ jobs:
 
       - name: Add env variable
         working-directory: fuelfinder
-        run: echo "REACT_APP_SAVE_API_URL='${{ REACT_APP_SAVE_API_URL }}'" > .env
-        env:
-          REACT_APP_SAVE_API_URL: "https://ekale7ux51.execute-api.eu-west-2.amazonaws.com/Production"
+        run: echo "REACT_APP_SAVE_API_URL='https://ekale7ux51.execute-api.eu-west-2.amazonaws.com/Production'" > .env
 
       - name: Build
         working-directory: fuelfinder
