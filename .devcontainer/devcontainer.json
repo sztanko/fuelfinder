@@ -1,0 +1,42 @@
+{
+	"name": "FuelFinder",
+	// Sets the run context to one level up instead of the .devcontainer folder.
+	"context": "..",
+	// Update the 'dockerFile' property if you aren't using the standard 'Dockerfile' filename.
+	"dockerFile": "../Dockerfile",
+	// Set *default* container specific settings.json values on container create.
+	"settings": {
+		"terminal.integrated.shell.linux": null
+	},
+	// Add the IDs of extensions you want installed when the container is created.
+	"extensions": [
+		"eamodio.gitlens",
+		"ms-python.python",
+		"ms-azuretools.vscode-docker",
+		"ms-python.vscode-pylance",
+		"dbaeumer.vscode-eslint",
+		"esbenp.prettier-vscode",
+		"erd0s.terraform-autocomplete",
+		"chenxsan.vscode-standardjs"
+	],
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	"forwardPorts": [
+		3000
+	],
+	// Uncomment the next line to run commands after the container is created - for example installing curl.
+	"postCreateCommand": "pip install -r requirements.txt",
+	// Uncomment when using a ptrace-based debugger like C++, Go, and Rust
+	// "runArgs": [ "--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined" ],
+	"containerEnv": {
+		"GIT_TOKEN": "${localEnv:GIT_TOKEN}",
+		"AWS_ACCESS_KEY_ID": "${localEnv:AWS_ACCESS_KEY_ID_SOLSTICESTREETS}",
+		"AWS_SECRET_ACCESS_KEY": "${localEnv:AWS_SECRET_ACCESS_KEY_SOLSTICESTREETS}",
+		"AWS_DEFAULT_REGION": "${localEnv:AWS_DEFAULT_REGION_SOLSTICESTREETS}",
+	},
+	// Uncomment to use the Docker CLI from inside the container. See https://aka.ms/vscode-remote/samples/docker-from-docker.
+	// "mounts": [
+	//	"source=${localEnv:HOME}/.dev_ssh,target=/root/.ssh,type=bind,readonly"
+	//],
+	// Uncomment to connect as a non-root user if you've added one. See https://aka.ms/vscode-remote/containers/non-root.
+	// "remoteUser": "vscode"
+}
