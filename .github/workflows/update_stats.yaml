@@ -28,7 +28,7 @@ jobs:
       - uses: actions/setup-python@v2
         with:
           python-version: '3.9'
-      - run: "pip install -r requirements.txt && aws logs tail /aws/lambda/FuelFinder --since 2h | grep '{"id"' | cut -f 3- -d ' ' | python data/create_json.py update-stats fuelfinder/public/stations.json"
+      - run: "pip install -r requirements.txt && aws logs tail /aws/lambda/FuelFinder --since 2h | grep '{\"id\"' | cut -f 3- -d ' ' | python data/create_json.py update-stats fuelfinder/public/stations.json"
 
       
 
