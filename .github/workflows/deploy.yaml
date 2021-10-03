@@ -3,8 +3,11 @@ name: DEPLOY
 on:
   push:
     branches: [master]
-    paths-ignore:
-      - '.github/workflows/update_stats.yaml'      
+    paths:
+      - '.github/workflows/deploy.yaml'
+      - 'fuelfinder/**'
+    paths-exclude:
+      - 'fuelfinder/public/stations.json'
   pull_request:
     branches: [master]
 
