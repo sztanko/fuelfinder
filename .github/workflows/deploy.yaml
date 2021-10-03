@@ -23,6 +23,14 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
+      - name: Test directory
+        #working-directory: ./fuelfinder
+        run: pwd
+      
+        - name: List directory
+        #working-directory: ./fuelfinder
+        run: ls -lalh
+                
       - name: Install dependencies
         #working-directory: ./fuelfinder
         run: npm install
