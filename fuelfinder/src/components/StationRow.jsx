@@ -7,21 +7,25 @@ import { UpdateForm } from "./UpdateForm";
  * -1: confident there is no fuel
  * 0: not sure
  * 1: confident there is fuel
- * @param {*} m5
- * @param {*} m30
+ * @param {*} mRecent
+ * @param {*} mAll
  * @returns
  */
-const getFuelConfidenceScore = (m5, m30) => {
-  const m5_total = m5.yes + m5.no;
+const getFuelConfidenceScore = (mRecent, mAll) => {
+  const mRecent_total = mRecent.yes + mRecent.no;
 
-  const m30_total = m30.yes + m30.no;
-  const m5_strength = 1 - 1 / Math.pow(3, m5_total);
-  const m30_strength = 1 - 1 / Math.pow(3, m30_total);
+  const mAll_total = mAll.yes + mAll.no;
+  const mRecent_strength = 1 - 1 / Math.pow(3, mRecent_total);
+  const mAll_strength = 1 - 1 / Math.pow(3, mAll_total);
 
-  if (m30_total === 0) return 0;
+  if (mAll_total === 0) return 0;
   return (
-    0.3 * m5_strength * (m5_total > 0 ? (m5.yes - m5.no) / m5_total : 0) +
-    0.7 * m30_strength * (m30_total > 0 ? (m30.yes - m30.no) / m30_total : 0)
+    0.3 *
+      mRecent_strength *
+      (mRecent_total > 0 ? (mRecent.yes - mRecent.no) / mRecent_total : 0) +
+    0.7 *
+      mAll_strength *
+      (mAll_total > 0 ? (mAll.yes - mAll.no) / mAll_total : 0)
   );
 };
 
@@ -43,13 +47,13 @@ const StationRow = (props) => {
   const mapUrl = `https://www.google.com/maps/dir/${myGmapsLocation}/${coords[1]},${coords[0]}`;
   // console.log(stats);
   const dieselConfidence = getFuelConfidenceScore(
-    stats["300"]["diesel"],
-    stats["1800"]["diesel"]
+    stats["1800"]["diesel"],
+    stats["7200"]["diesel"]
   );
   const [dieselLabel, dieselVariant] = getLabelForConfidence(dieselConfidence);
   const petrolConfidence = getFuelConfidenceScore(
-    stats["300"]["petrol"],
-    stats["1800"]["petrol"]
+    stats["1800"]["petrol"],
+    stats["7200"]["petrol"]
   );
   const [petrolLabel, petrolVariant] = getLabelForConfidence(petrolConfidence);
 
