@@ -31,21 +31,16 @@ jobs:
         #working-directory: fuelfinder
         run: ls -lalh
 
-      - name: List directory in web app
-        working-directory: fuelfinder
-        run: ls -lalh
-
       - name: Install dependencies
-        working-directory: fuelfinder
-        run: npm install
+        run: cd fuelfinder && npm install
 
       - name: Build
-        run: npm run build
-        working-directory: fuelfinder
+        run: cd fuelfinder && npm run build
 
       - name: Deploy
         working-directory: fuelfinder
         run: |
+          cd fuelfinder
           git config --global user.name $user_name
           git config --global user.email $user_email
           git remote set-url origin https://${github_token}@github.com/${repository}
