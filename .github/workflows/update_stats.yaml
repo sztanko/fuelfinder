@@ -4,7 +4,10 @@ on:
   schedule:
     # * is a special character in YAML so you have to quote this string
     - cron: "*/3 * * * *"
-
+  push:
+    branches: [master]
+    paths:
+      - '.github/workflows/update_stats.yaml'      
 jobs:
   build:
     runs-on: ubuntu-latest
