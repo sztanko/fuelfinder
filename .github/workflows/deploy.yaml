@@ -35,6 +35,10 @@ jobs:
         working-directory: fuelfinder
         run: npm run build
 
+      - name: Add CNAME to page
+        working-directory: fuelfinder/build
+        run: echo -n "fuelfinder.uk" > CNAME
+
       - name: Deploy
         working-directory: fuelfinder
         run: |
