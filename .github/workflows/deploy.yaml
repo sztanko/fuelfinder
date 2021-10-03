@@ -31,16 +31,20 @@ jobs:
         #working-directory: ./fuelfinder
         run: ls -lalh
 
+      - name: List directory in web app
+        working-directory: ./fuelfinder
+        run: ls -lalh
+
       - name: Install dependencies
-        #working-directory: ./fuelfinder
+        working-directory: ./fuelfinder
         run: npm install
 
       - name: Build
         run: npm run build
-        #working-directory: ./fuelfinder
+        working-directory: ./fuelfinder
 
       - name: Deploy
-        #working-directory: ./fuelfinder
+        working-directory: ./fuelfinder
         run: |
           git config --global user.name $user_name
           git config --global user.email $user_email
