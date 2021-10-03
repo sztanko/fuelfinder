@@ -49,3 +49,4 @@ jobs:
           user_email: "github-actions[bot]@users.noreply.github.com"
           github_token: ${{ secrets.ACTIONS_DEPLOY_ACCESS_TOKEN }}
           repository: ${{ github.repository }}
+          REACT_APP_SAVE_API_URL: "https://ekale7ux51.execute-api.eu-west-2.amazonaws.com/Production"
