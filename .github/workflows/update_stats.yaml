@@ -41,7 +41,7 @@ jobs:
       - name: Fetch logs
         working-directory: master
         run: "pip install -r requirements.txt && aws logs tail /aws/lambda/FuelFinder --since 2h | grep '{\"id\"' | cut -f 3- -d ' ' | python data/create_json.py update-stats fuelfinder/public/stations.json"
-      - name: Push to stations.json to gh-pages
+      - name: Push stations.json to gh-pages and master
         working-directory: gh-pages
         run: |
           git config --global user.name $user_name
@@ -49,6 +49,10 @@ jobs:
           git remote set-url origin https://${github_token}@github.com/${repository}
           cp ../master/fuelfinder/public/stations.json .
           git add stations.json
+          git commit -m "Automated update"
+          git push origin HEAD
+          cd ../master/
+          git add fuelfinder/public/stations.json
           git commit -m "Automated update"
           git push origin HEAD
         env:
