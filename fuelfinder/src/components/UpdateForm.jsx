@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Row, Form, Col, Alert, Button } from "react-bootstrap";
 import { saveStation } from "../lib/data";
 const UpdateForm = (props) => {
-  const { stationId, onSubmit } = props;
+  const { stationId } = props;
   const [petrol, setPetrol] = useState(undefined);
   const [diesel, setDiesel] = useState(undefined);
   const [queue, setQueue] = useState(-5);

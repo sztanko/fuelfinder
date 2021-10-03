@@ -105,9 +105,7 @@ const StationRow = (props) => {
           </Button>
         </Col>
       </Row>
-      {isFormVisible && (
-        <UpdateForm stationId={id} onSubmit={() => setFormVisible(false)} />
-      )}
+      {isFormVisible && <UpdateForm stationId={id} />}
     </div>
   );
 };
