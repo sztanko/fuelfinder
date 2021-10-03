@@ -15,7 +15,15 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+        with:
+          path: master
+          ref: master
 
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          path: gh-pages
+          ref: gh-pages
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -27,20 +35,19 @@ jobs:
           # role-duration-seconds: 1200
           # role-session-name: MySessionName
 
-      - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
         with:
           python-version: '3.9'
-      - run: "pip install -r requirements.txt && aws logs tail /aws/lambda/FuelFinder --since 2h | grep '{\"id\"' | cut -f 3- -d ' ' | python data/create_json.py update-stats fuelfinder/public/stations.json"
+      - name: Fetch logs
+        working-directory: master
+        run: "pip install -r requirements.txt && aws logs tail /aws/lambda/FuelFinder --since 2h | grep '{\"id\"' | cut -f 3- -d ' ' | python data/create_json.py update-stats fuelfinder/public/stations.json"
       - name: Push to stations.json to gh-pages
+        working-directory: gh-pages
         run: |
-          cp fuelfinder/public/stations.json /tmp/
           git config --global user.name $user_name
           git config --global user.email $user_email
           git remote set-url origin https://${github_token}@github.com/${repository}
-          git checkout gh-pages
-          cp /tmp/stations.json .
-          rm /tmp/stations.json
+          cp ../master/fuelfinder/public/stations.json .
           git add stations.json
           git commit -m "Automated update"
           git push origin HEAD
