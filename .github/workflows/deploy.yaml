@@ -26,11 +26,11 @@ jobs:
       - name: Test directory
         #working-directory: ./fuelfinder
         run: pwd
-      
-        - name: List directory
+
+      - name: List directory
         #working-directory: ./fuelfinder
         run: ls -lalh
-                
+
       - name: Install dependencies
         #working-directory: ./fuelfinder
         run: npm install
