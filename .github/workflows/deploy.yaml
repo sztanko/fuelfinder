@@ -3,6 +3,8 @@ name: DEPLOY
 on:
   push:
     branches: [master]
+    paths-ignore:
+      - '.github/workflows/update_stats.yaml'      
   pull_request:
     branches: [master]
 
