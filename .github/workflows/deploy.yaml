@@ -23,19 +23,19 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Test directory
-        #working-directory: fuelfinder
-        run: pwd
-
-      - name: List directory
-        #working-directory: fuelfinder
-        run: ls -lalh
-
       - name: Install dependencies
-        run: cd fuelfinder && npm install
+        working-directory: fuelfinder
+        run: npm install
+
+      - name: Add env variable
+        working-directory: fuelfinder
+        run: echo "REACT_APP_SAVE_API_URL='${{ REACT_APP_SAVE_API_URL }}'" > .env
+        env:
+          REACT_APP_SAVE_API_URL: "https://ekale7ux51.execute-api.eu-west-2.amazonaws.com/Production"
 
       - name: Build
-        run: cd fuelfinder && npm run build
+        working-directory: fuelfinder
+        run: npm run build
 
       - name: Deploy
         working-directory: fuelfinder
@@ -49,4 +49,3 @@ jobs:
           user_email: "github-actions[bot]@users.noreply.github.com"
           github_token: ${{ secrets.ACTIONS_DEPLOY_ACCESS_TOKEN }}
           repository: ${{ github.repository }}
-          REACT_APP_SAVE_API_URL: "https://ekale7ux51.execute-api.eu-west-2.amazonaws.com/Production"
