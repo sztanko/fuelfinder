@@ -1,0 +1,115 @@
+import { Row, Col, Badge, Button } from "react-bootstrap";
+import { useState } from "react";
+import { haversineDistance } from "../lib/geo";
+import { UpdateForm } from "./UpdateForm";
+
+/**
+ * -1: confident there is no fuel
+ * 0: not sure
+ * 1: confident there is fuel
+ * @param {*} m5
+ * @param {*} m30
+ * @returns
+ */
+const getFuelConfidenceScore = (m5, m30) => {
+  const m5_total = m5.yes + m5.no;
+
+  const m30_total = m30.yes + m30.no;
+  const m5_strength = 1 - 1 / Math.pow(3, m5_total);
+  const m30_strength = 1 - 1 / Math.pow(3, m30_total);
+
+  if (m30_total === 0) return 0;
+  return (
+    0.3 * m5_strength * (m5_total > 0 ? (m5.yes - m5.no) / m5_total : 0) +
+    0.7 * m30_strength * (m30_total > 0 ? (m30.yes - m30.no) / m30_total : 0)
+  );
+};
+
+const getLabelForConfidence = (confidence) => {
+  const label = confidence < 0 ? "no" : "yes";
+  if (Math.abs(confidence) < 0.1) return ["Don't know", "secondary"];
+  if (Math.abs(confidence) < 0.4) return [`Not sure`, "warning"];
+  if (Math.abs(confidence) < 0.7)
+    return [`Probably ${label}`, confidence < 0 ? "danger" : "success"];
+  return [label, confidence < 0 ? "danger" : "success"];
+};
+
+const StationRow = (props) => {
+  const { id, coords, name, last_update, phone, address, stats } =
+    props.station;
+  const [isFormVisible, setFormVisible] = useState(false);
+  const distance = haversineDistance(coords, props.userLocation);
+  const myGmapsLocation = [props.userLocation[1], props.userLocation[0]];
+  const mapUrl = `https://www.google.com/maps/dir/${myGmapsLocation}/${coords[1]},${coords[0]}`;
+  // console.log(stats);
+  const dieselConfidence = getFuelConfidenceScore(
+    stats["300"]["diesel"],
+    stats["1800"]["diesel"]
+  );
+  const [dieselLabel, dieselVariant] = getLabelForConfidence(dieselConfidence);
+  const petrolConfidence = getFuelConfidenceScore(
+    stats["300"]["petrol"],
+    stats["1800"]["petrol"]
+  );
+  const [petrolLabel, petrolVariant] = getLabelForConfidence(petrolConfidence);
+
+  /*
+  Possible states:
+  - yes
+  - no
+  - maybe
+  - information outdated
+  
+  */
+  // console.log(last_update);
+  const lastUpdate = Math.round(
+    (new Date().getTime() / 1000 - last_update) / 60
+  );
+  return (
+    <div className="station">
+      <Row>
+        <Col>
+          {name || address || "unnamed"}
+          <br />
+          <small>
+            <a href={mapUrl}>{Math.ceil(distance * 100) / 100} miles away</a>
+          </small>
+        </Col>
+        <Col>
+          <div className="stationInfo">
+            Diesel:
+            <Badge bg={dieselVariant}>{dieselLabel}</Badge>
+            <br />
+            Petrol:
+            <Badge bg={petrolVariant}>{petrolLabel}</Badge>
+            <br />
+            <div className="lastUpdate">last update {lastUpdate}m ago</div>
+          </div>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          {phone && (
+            <Button size="sm" variant="info" href={`tel://${phone}`}>
+              Call them: {phone}
+            </Button>
+          )}
+        </Col>
+        <Col>
+          <Button
+            size="sm"
+            variant="warning"
+            onClick={(e) => setFormVisible(!isFormVisible)}
+          >
+            {isFormVisible ? "Hide" : "Send Update"}
+          </Button>
+        </Col>
+      </Row>
+      {isFormVisible && (
+        <UpdateForm stationId={id} onSubmit={() => setFormVisible(false)} />
+      )}
+    </div>
+  );
+};
+
+export { StationRow };

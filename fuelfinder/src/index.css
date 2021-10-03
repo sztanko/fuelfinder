@@ -1,0 +1,32 @@
+@import "bootstrap/dist/css/bootstrap.css";
+
+body {
+  background-color: lightgrey;
+}
+
+.stationList {
+  border: 1px solid grey;
+  padding: 10px;
+  background-color: white;
+  border-radius: 5px;
+}
+.station {
+  border-bottom: 1px solid lightgrey;
+  padding-bottom: 15px;
+  padding-top: 15px;
+}
+.stationInfo {
+  text-align: left;
+}
+
+.lastUpdate {
+  font-size: x-small;
+}
+
+
+.submitForm{
+  padding: 5px;
+  margin-top: 10px;
+  border: 1px solid lightgrey;
+  border-radius: 5px;
+}
