@@ -73,8 +73,7 @@ const StationRow = (props) => {
     <div className="station">
       <Row>
         <Col>
-          {name || address || "unnamed"}
-          <br />
+          <div className="stationName">{name || address || "unnamed"}</div>
           <small>
             <a href={mapUrl}>{Math.ceil(distance * 100) / 100} miles away</a>
           </small>
