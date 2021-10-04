@@ -14,7 +14,7 @@ const UpdateForm = (props) => {
           <Col>
             <Alert variant="success">
               Thank you for submitting this information. It will appear on the
-              website within the next 5 minutes.
+              website within the next 10-15 minutes.
             </Alert>
           </Col>
         </Row>
