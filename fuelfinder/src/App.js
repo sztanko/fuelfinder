@@ -57,11 +57,14 @@ function App() {
       <Row>
         <Col>
           <h1>FuelFinder.uk</h1>
+          <Alert>
+            This is a free, crowdsourced project. Please contribute!
+          </Alert>
         </Col>
       </Row>
       <Row>
         <Col>
-          <h2>Nearest Stations</h2>
+          <h3>Nearest Stations</h3>
           {content}
         </Col>
       </Row>
