@@ -43,7 +43,7 @@ function App() {
     content = (
       <Alert>
         Getting your location. Please make sure you have location sharing
-        enabled.
+        enabled. We are not storing it anywhere.
       </Alert>
     );
   }
