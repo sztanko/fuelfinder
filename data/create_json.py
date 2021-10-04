@@ -4,7 +4,11 @@ import csv
 import time
 import sys
 
-# aws logs tail /aws/lambda/FuelFinder --since 2h | grep '{"id"' | cut -f 3- -d ' ' | python data/create_json.py update-stats fuelfinder/public/stations.json
+# aws logs tail /aws/lambda/FuelFinder --since 3h | grep '{"id"' | cut -f 3- -d ' ' | python data/create_json.py update-stats fuelfinder/public/stations.json
+
+
+TIME_THRESHOLD = 3 * 3600
+SMALL_TIME_THRESHOLD = 1800
 
 
 def get_name(d):
@@ -38,12 +42,12 @@ def create_dict(file_name):
                 "phone": r["phone"],
                 "addr": r["addr"],
                 "stats": {
-                    "1800": {
+                    str(SMALL_TIME_THRESHOLD): {
                         "queue": 0,
                         "diesel": {"yes": 0, "no": 0},
                         "petrol": {"yes": 0, "no": 0},
                     },
-                    "7200": {
+                    str(TIME_THRESHOLD): {
                         "queue": 0,
                         "diesel": {"yes": 0, "no": 0},
                         "petrol": {"yes": 0, "no": 0},
@@ -69,12 +73,12 @@ def update_stats(json_file_name: str, backup: bool = False):
     ts = int(time.time())
     for station in data:
         stats = {
-            "1800": {
+            str(SMALL_TIME_THRESHOLD): {
                 "queue": 0,
                 "diesel": {"yes": 0, "no": 0},
                 "petrol": {"yes": 0, "no": 0},
             },
-            "7200": {
+            str(TIME_THRESHOLD): {
                 "queue": 0,
                 "diesel": {"yes": 0, "no": 0},
                 "petrol": {"yes": 0, "no": 0},
@@ -98,9 +102,9 @@ def update_stats(json_file_name: str, backup: bool = False):
                     value = "yes"
                 else:
                     value = "no"
-                stats_map[id]["7200"][fuel_type][value] += 1
-                if ts - event_ts < 1800:
-                    stats_map[id]["1800"][fuel_type][value] += 1
+                stats_map[id][str(TIME_THRESHOLD)][fuel_type][value] += 1
+                if ts - event_ts < SMALL_TIME_THRESHOLD:
+                    stats_map[id][str(SMALL_TIME_THRESHOLD)][fuel_type][value] += 1
     data.sort(key=lambda d: d["id"])
     for station in data:
         station["last_update"] = lu_map[station["id"]]

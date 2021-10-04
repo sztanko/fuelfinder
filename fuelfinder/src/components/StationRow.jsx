@@ -3,6 +3,9 @@ import { useState } from "react";
 import { haversineDistance } from "../lib/geo";
 import { UpdateForm } from "./UpdateForm";
 
+const TIME_THRESHOLD = (3 * 3600).toString();
+const SMALL_TIME_THRESHOLD = (1800).toString();
+
 /**
  * -1: confident there is no fuel
  * 0: not sure
@@ -47,13 +50,13 @@ const StationRow = (props) => {
   const mapUrl = `https://www.google.com/maps/dir/${myGmapsLocation}/${coords[1]},${coords[0]}`;
   // console.log(stats);
   const dieselConfidence = getFuelConfidenceScore(
-    stats["1800"]["diesel"],
-    stats["7200"]["diesel"]
+    stats[SMALL_TIME_THRESHOLD]["diesel"],
+    stats[TIME_THRESHOLD]["diesel"]
   );
   const [dieselLabel, dieselVariant] = getLabelForConfidence(dieselConfidence);
   const petrolConfidence = getFuelConfidenceScore(
-    stats["1800"]["petrol"],
-    stats["7200"]["petrol"]
+    stats[SMALL_TIME_THRESHOLD]["petrol"],
+    stats[TIME_THRESHOLD]["petrol"]
   );
   const [petrolLabel, petrolVariant] = getLabelForConfidence(petrolConfidence);
 

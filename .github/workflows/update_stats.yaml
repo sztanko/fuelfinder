@@ -40,7 +40,7 @@ jobs:
           python-version: '3.9'
       - name: Fetch logs
         working-directory: master
-        run: "pip install -r requirements.txt && aws logs tail /aws/lambda/FuelFinder --since 2h | grep '{\"id\"' | cut -f 3- -d ' ' | python data/create_json.py update-stats fuelfinder/public/stations.json"
+        run: "pip install -r requirements.txt && aws logs tail /aws/lambda/FuelFinder --since 3h | grep '{\"id\"' | cut -f 3- -d ' ' | python data/create_json.py update-stats fuelfinder/public/stations.json"
       - name: Push stations.json to gh-pages and master
         working-directory: gh-pages
         run: |
