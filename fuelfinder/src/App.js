@@ -58,8 +58,10 @@ function App() {
         <Col>
           <h1>FuelFinder.uk</h1>
           <p>
-            This is a free, crowdsourced project. Please contribute! Any
-            questions, <a href="mailto:sztanko@gmail.com">email me</a>.
+            This is a free,{" "}
+            <a href="https://github.com/sztanko/fuelfinder">open source</a>{" "}
+            crowdsourced project. Please contribute! Any questions,{" "}
+            <a href="mailto:sztanko@gmail.com">email me</a>.
           </p>
         </Col>
       </Row>
