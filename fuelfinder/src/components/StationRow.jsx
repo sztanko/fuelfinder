@@ -91,7 +91,7 @@ const StationRow = (props) => {
             <Badge bg={petrolVariant}>{petrolLabel}</Badge>
             <br />
             <div className="lastUpdate">
-              {lastUpdate < 5 * 3600
+              {lastUpdate < 5 * 60
                 ? `last update ${lastUpdate}m ago`
                 : "too long ago"}
             </div>
