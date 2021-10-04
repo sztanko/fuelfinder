@@ -40,7 +40,12 @@ function App() {
     if (error) {
       content = <Alert>Coulnd't get your location.</Alert>;
     }
-    content = <Alert>Getting your location</Alert>;
+    content = (
+      <Alert>
+        Getting your location. Please make sure you have location sharing
+        enabled.
+      </Alert>
+    );
   }
 
   if (!content && nearestStations) {
