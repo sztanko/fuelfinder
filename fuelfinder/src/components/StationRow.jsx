@@ -42,8 +42,7 @@ const getLabelForConfidence = (confidence) => {
 };
 
 const StationRow = (props) => {
-  const { id, coords, name, last_update, phone, address, stats } =
-    props.station;
+  const { id, coords, name, last_update, phone, addr, stats } = props.station;
   const [isFormVisible, setFormVisible] = useState(false);
   const distance = haversineDistance(coords, props.userLocation);
   const myGmapsLocation = [props.userLocation[1], props.userLocation[0]];
@@ -76,7 +75,8 @@ const StationRow = (props) => {
     <div className="station">
       <Row>
         <Col>
-          <div className="stationName">{name || address || "unnamed"}</div>
+          <div className="stationName">{name || addr || "unnamed"}</div>
+          {addr && <p>{addr}</p>}
           <small>
             {Math.ceil(distance * 100) / 100} miles away. (
             <a href={mapUrl}>Directions</a>)
@@ -112,7 +112,7 @@ const StationRow = (props) => {
           </Button>
         </Col>
       </Row>
-      {isFormVisible && <UpdateForm stationId={id} />}
+      {isFormVisible && <UpdateForm stationId={id} address={""} />}
     </div>
   );
 };

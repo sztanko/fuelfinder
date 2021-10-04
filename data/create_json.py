@@ -68,8 +68,7 @@ def update_stats(json_file_name: str, backup: bool = False):
         print(f"Creating backup in {bkp_file_name}")
         with open(bkp_file_name, "w") as f:
             json.dump(obj, f)
-    stats_map = {}
-    lu_map = {}
+    station_map = {}
     ts = int(time.time())
     for station in data:
         stats = {
@@ -85,29 +84,29 @@ def update_stats(json_file_name: str, backup: bool = False):
             },
         }
 
-        stats_map[station["id"]] = stats
         station["stats"] = stats
-        lu_map[station["id"]] = station["last_update"]
+        station_map[station["id"]] = station
     count = 0
     for line in sys.stdin:
         count += 1
         row = json.loads(line)
         id = row["id"]
         event_ts = row["ts"]
-        if lu_map[id] < event_ts:
-            lu_map[id] = event_ts
+        station = station_map[id]
+        if station["last_update"] < event_ts:
+            station["last_update"] = event_ts
+        if "addr" in row and row["addr"]:
+            station["addr"] = row["addr"]
         for fuel_type in ["diesel", "petrol"]:
             if fuel_type in row:
                 if row[fuel_type]:
                     value = "yes"
                 else:
                     value = "no"
-                stats_map[id][str(TIME_THRESHOLD)][fuel_type][value] += 1
+                station["stats"][str(TIME_THRESHOLD)][fuel_type][value] += 1
                 if ts - event_ts < SMALL_TIME_THRESHOLD:
-                    stats_map[id][str(SMALL_TIME_THRESHOLD)][fuel_type][value] += 1
+                    station["stats"][str(SMALL_TIME_THRESHOLD)][fuel_type][value] += 1
     data.sort(key=lambda d: d["id"])
-    for station in data:
-        station["last_update"] = lu_map[station["id"]]
     out = {"last_update": ts, "station_data": data}
     with open(json_file_name, "w") as f:
         json.dump(out, f, indent=4)
