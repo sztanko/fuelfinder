@@ -2,9 +2,10 @@ import { useState } from "react";
 import { Row, Form, Col, Alert, Button } from "react-bootstrap";
 import { saveStation } from "../lib/data";
 const UpdateForm = (props) => {
-  const { stationId } = props;
+  const { stationId, address } = props;
   const [petrol, setPetrol] = useState(undefined);
   const [diesel, setDiesel] = useState(undefined);
+  const [addr, setAddr] = useState(address || "");
   const [queue, setQueue] = useState(-5);
   const [msg, setMsg] = useState(null);
   if (msg) {
@@ -26,12 +27,13 @@ const UpdateForm = (props) => {
       <Form
         onSubmit={(e) => {
           e.preventDefault();
-          console.log(e);
+          // console.log(e);
           const data = {
             id: stationId,
             petrol,
             diesel,
             queue,
+            addr,
           };
           saveStation(data, () => {
             setMsg(true);
@@ -125,6 +127,22 @@ const UpdateForm = (props) => {
             {queue >= 0 ? `${queue} minute(s)` : "No idea"}
           </Col>
         </Form.Group>
+
+        <Form.Group as={Row} className="mb-3" controlId="formAddr">
+          <Form.Label column sm="5">
+            Street name, neighbourhood, correct if empty or wrong:
+          </Form.Label>
+          <Col sm="7">
+            <Form.Control
+              type="text"
+              value={addr}
+              onChange={(event) => {
+                setAddr(event.target.value);
+              }}
+            />
+          </Col>
+        </Form.Group>
+
         <Button variant="primary" type="submit">
           Submit
         </Button>
