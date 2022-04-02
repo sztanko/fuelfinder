@@ -3,7 +3,7 @@ name: Update Stats
 on:
   schedule:
     # * is a special character in YAML so you have to quote this string
-    - cron: "* * * * *"
+    - cron: "0 1 * * *" # Update once a day, now, that the project is not active
   push:
     branches: [master]
     paths:
